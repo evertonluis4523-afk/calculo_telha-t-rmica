@@ -747,5 +747,118 @@ $('reset').addEventListener('click',()=>{Object.entries(defaults).forEach(([k,v]
 load();applyLogo();render();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
 </script>
+<!-- Ajuste de tela (mobile) -->
+<script>
+(function(){
+  var KEY = 'rmFitScreen';
+  var wrap, btn;
+
+  function ensureWrap(){
+    wrap = document.getElementById('rmFitWrap');
+    if (wrap) return wrap;
+    wrap = document.createElement('div');
+    wrap.id = 'rmFitWrap';
+    wrap.style.transformOrigin = 'top left';
+    while (document.body.firstChild) wrap.appendChild(document.body.firstChild);
+    document.body.appendChild(wrap);
+    return wrap;
+  }
+
+  function naturalWidth(){
+    var t = wrap.style.transform;
+    wrap.style.transform = 'none';
+    var w = wrap.scrollWidth;
+    wrap.style.transform = t;
+    return w;
+  }
+
+  function viewportWidth(){
+    if (window.visualViewport && window.visualViewport.width) return window.visualViewport.width;
+    if (window.screen && window.screen.width) return window.screen.width;
+    return window.innerWidth;
+  }
+
+  function setFit(on){
+    if (on) {
+      var w = naturalWidth();
+      var scale = Math.min(1, viewportWidth() / w);
+      wrap.style.transform = 'scale(' + scale + ')';
+    } else {
+      wrap.style.transform = 'none';
+    }
+    document.documentElement.style.overflowX = on ? 'hidden' : '';
+    btn.classList.toggle('rmFitOn', on);
+    btn.title = on ? 'Restaurar tela cheia (desktop)' : 'Ajustar à tela do celular';
+    try { localStorage.setItem(KEY, on ? '1' : '0'); } catch(e){}
+  }
+
+  function build(){
+    ensureWrap();
+    btn = document.createElement('button');
+    btn.id = 'rmFitBtn';
+    btn.type = 'button';
+    btn.innerHTML = '&#9974;';
+    btn.title = 'Ajustar à tela do celular';
+    document.body.appendChild(btn);
+
+    var css = document.createElement('style');
+    css.textContent =
+      '#rmFitBtn{position:fixed;right:14px;bottom:14px;width:42px;height:42px;border-radius:50%;'+
+      'background:#16171b;color:#f0f0f0;border:1px solid rgba(255,255,255,.18);font-size:19px;'+
+      'line-height:1;z-index:2147483647;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.4);'+
+      'display:flex;align-items:center;justify-content:center;opacity:.5;transition:opacity .2s,transform .15s;'+
+      '-webkit-tap-highlight-color:transparent;padding:0}'+
+      '#rmFitBtn:active{transform:scale(.92)}'+
+      '#rmFitBtn.rmFitOn{opacity:.95;background:#c8302b;border-color:#c8302b}'+
+      '@media(hover:hover){#rmFitBtn:hover{opacity:.95}}';
+    document.head.appendChild(css);
+
+    btn.addEventListener('click', function(){
+      setFit(wrap.style.transform === 'none' || !wrap.style.transform);
+    });
+
+    // Em páginas largas (pensadas pra PC), o viewport de layout do celular se
+    // expande para acompanhar o conteúdo — então "position:fixed" com
+    // right/bottom fica ancorado fora da área visível. Reposiciona o botão
+    // usando o visualViewport real (tela física) em vez do layout viewport.
+    function positionBtn(){
+      var vv = window.visualViewport;
+      if (!vv) return;
+      var size = 42, margin = 14;
+      btn.style.right = 'auto';
+      btn.style.bottom = 'auto';
+      btn.style.left = Math.round(vv.offsetLeft + vv.width - size - margin) + 'px';
+      btn.style.top = Math.round(vv.offsetTop + vv.height - size - margin) + 'px';
+    }
+
+    var resizeTimer;
+    function onResize(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function(){
+        positionBtn();
+        if (wrap.style.transform && wrap.style.transform !== 'none') setFit(true);
+      }, 150);
+    }
+    window.addEventListener('resize', onResize);
+    window.addEventListener('scroll', positionBtn, { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', onResize);
+      window.visualViewport.addEventListener('scroll', positionBtn);
+    }
+    positionBtn();
+
+    var saved;
+    try { saved = localStorage.getItem(KEY); } catch(e){}
+    if (saved === '1') setFit(true);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', build);
+  } else {
+    build();
+  }
+})();
+</script>
+
 </body>
 </html>
