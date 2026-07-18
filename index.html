@@ -750,8 +750,14 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 <!-- Ajuste de tela (mobile) -->
 <script>
 (function(){
+  // Sistemas embutidos como aba dentro de outro (ex: dentro do central_rm)
+  // não ganham botão próprio: a página que os contém já ajusta a tela
+  // inteira, incluindo o conteúdo embutido. Ter os dois brigando pelo
+  // mesmo transform só causa confusão e comportamento duplicado.
+  if (window.top !== window.self) return;
+
   var KEY = 'rmFitScreen';
-  var btn;
+  var btn, fitEnabled = false;
 
   // Transforma o <body> diretamente (sem envolver o conteúdo numa nova div):
   // muitos sistemas usam "body{display:flex;height:100vh}" pra organizar
@@ -775,16 +781,21 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   }
 
   function isOn(){
-    var t = document.body.style.transform;
-    return !!t && t !== 'none';
+    return fitEnabled;
   }
 
   function setFit(on){
+    fitEnabled = on;
     if (on) {
       document.body.style.transformOrigin = 'top left';
       var w = naturalWidth();
       var scale = Math.min(1, viewportWidth() / w);
-      document.body.style.transform = 'scale(' + scale + ')';
+      // scale(1) não é o mesmo que "sem transform": mesmo sem mudar nada
+      // visualmente, qualquer transform diferente de none cria um novo
+      // contexto de posicionamento para elementos fixed/sticky dentro do
+      // body, podendo bagunçar cabeçalhos e barras fixas à toa quando o
+      // conteúdo já cabe na tela.
+      document.body.style.transform = scale >= 0.999 ? 'none' : 'scale(' + scale + ')';
     } else {
       document.body.style.transform = 'none';
     }
