@@ -751,24 +751,20 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 <script>
 (function(){
   var KEY = 'rmFitScreen';
-  var wrap, btn;
+  var btn;
 
-  function ensureWrap(){
-    wrap = document.getElementById('rmFitWrap');
-    if (wrap) return wrap;
-    wrap = document.createElement('div');
-    wrap.id = 'rmFitWrap';
-    wrap.style.transformOrigin = 'top left';
-    while (document.body.firstChild) wrap.appendChild(document.body.firstChild);
-    document.body.appendChild(wrap);
-    return wrap;
-  }
-
+  // Transforma o <body> diretamente (sem envolver o conteúdo numa nova div):
+  // muitos sistemas usam "body{display:flex;height:100vh}" pra organizar
+  // sidebar + área de conteúdo lado a lado, e envolver os filhos numa div
+  // extra quebraria esse layout (a área de conteúdo perde a altura e fica
+  // em branco). O botão fica fora do <body> (direto em <html>) pra nunca
+  // ser afetado pela escala nem herdar o novo containing block que o
+  // transform cria para descendentes com position:fixed.
   function naturalWidth(){
-    var t = wrap.style.transform;
-    wrap.style.transform = 'none';
-    var w = wrap.scrollWidth;
-    wrap.style.transform = t;
+    var t = document.body.style.transform;
+    document.body.style.transform = 'none';
+    var w = document.body.scrollWidth;
+    document.body.style.transform = t;
     return w;
   }
 
@@ -778,13 +774,19 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     return window.innerWidth;
   }
 
+  function isOn(){
+    var t = document.body.style.transform;
+    return !!t && t !== 'none';
+  }
+
   function setFit(on){
     if (on) {
+      document.body.style.transformOrigin = 'top left';
       var w = naturalWidth();
       var scale = Math.min(1, viewportWidth() / w);
-      wrap.style.transform = 'scale(' + scale + ')';
+      document.body.style.transform = 'scale(' + scale + ')';
     } else {
-      wrap.style.transform = 'none';
+      document.body.style.transform = 'none';
     }
     document.documentElement.style.overflowX = on ? 'hidden' : '';
     btn.classList.toggle('rmFitOn', on);
@@ -793,13 +795,12 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   }
 
   function build(){
-    ensureWrap();
     btn = document.createElement('button');
     btn.id = 'rmFitBtn';
     btn.type = 'button';
     btn.innerHTML = '&#9974;';
     btn.title = 'Ajustar à tela do celular';
-    document.body.appendChild(btn);
+    document.documentElement.appendChild(btn);
 
     var css = document.createElement('style');
     css.textContent =
@@ -814,7 +815,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     document.head.appendChild(css);
 
     btn.addEventListener('click', function(){
-      setFit(wrap.style.transform === 'none' || !wrap.style.transform);
+      setFit(!isOn());
     });
 
     // Em páginas largas (pensadas pra PC), o viewport de layout do celular se
@@ -836,7 +837,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function(){
         positionBtn();
-        if (wrap.style.transform && wrap.style.transform !== 'none') setFit(true);
+        if (isOn()) setFit(true);
       }, 150);
     }
     window.addEventListener('resize', onResize);
@@ -859,6 +860,5 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   }
 })();
 </script>
-
 </body>
 </html>
