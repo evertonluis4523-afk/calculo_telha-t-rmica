@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#16171C; --appbar:#1d2127; --panel:#1f242b; --panel2:#181c22;
-  --line:#2b313a; --muted:#8b9098; --text:#e7eaee; --accent:#8c1d18;
-  --steel:#c7ccd1; --steel2:#eef1f4; --amber:#e0a32e;
+  --bg:#f6f6f3; --appbar:#ffffff; --panel:#ffffff; --panel2:#f6f6f3;
+  --line:#e6e6e1; --muted:#6e7178; --text:#16171a; --accent:#8c1d18;
+  --steel:#7a818b; --steel2:#5b6470; --amber:#b4690e;
   --font:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
 }
 *{box-sizing:border-box}
@@ -48,7 +48,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);fon
   font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.3px}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
 .btn:active{transform:translateY(1px)}
-.svgbox{width:100%;overflow-x:auto;border-radius:8px;background:#0f1115;border:1px solid var(--line)}
+.svgbox{width:100%;overflow-x:auto;border-radius:8px;background:#ffffff;border:1px solid var(--line)}
 .svgbox svg{display:block;width:100%;min-width:720px;height:auto}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
@@ -88,7 +88,7 @@ tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:none}
 .subtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .cadtoolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .cadwrap{display:flex;gap:14px;flex-wrap:wrap}
-.cadcanvasbox{flex:1 1 480px;min-width:320px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#0f1115;touch-action:none}
+.cadcanvasbox{flex:1 1 480px;min-width:320px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#ffffff;touch-action:none}
 .cadcanvasbox canvas{display:block;cursor:crosshair}
 .cadside{width:280px;display:flex;flex-direction:column;gap:12px}
 #aguaList{font-size:12px}
@@ -98,7 +98,7 @@ tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:none}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#1d2127">
+<meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="./icon-192.png">
@@ -451,36 +451,36 @@ function compute(d){
 
 /* ---------- helpers de cota ---------- */
 function slash(x,y,c){return `<line x1="${(x-3).toFixed(1)}" y1="${(y+3).toFixed(1)}" x2="${(x+3).toFixed(1)}" y2="${(y-3).toFixed(1)}" stroke="${c}" stroke-width="1"/>`;}
-function hdim(x1,x2,y,label,color){color=color||'#8b9098';const m=(x1+x2)/2;
+function hdim(x1,x2,y,label,color){color=color||'#6b7280';const m=(x1+x2)/2;
   return `<line x1="${x1.toFixed(1)}" y1="${y}" x2="${x2.toFixed(1)}" y2="${y}" stroke="${color}" stroke-width="1"/>`+
     slash(x1,y,color)+slash(x2,y,color)+
-    `<text x="${m.toFixed(1)}" y="${y-6}" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#cfd3d8">${label}</text>`;}
-function vdim(y1,y2,x,label){const c='#8b9098',m=(y1+y2)/2;
+    `<text x="${m.toFixed(1)}" y="${y-6}" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#2f343c">${label}</text>`;}
+function vdim(y1,y2,x,label){const c='#6b7280',m=(y1+y2)/2;
   return `<line x1="${x}" y1="${y1.toFixed(1)}" x2="${x}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="1"/>`+
     `<line x1="${x-4}" y1="${y1.toFixed(1)}" x2="${x+4}" y2="${y1.toFixed(1)}" stroke="${c}" stroke-width="1"/>`+
     `<line x1="${x-4}" y1="${y2.toFixed(1)}" x2="${x+4}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="1"/>`+
-    `<text x="${x-8}" y="${(m+4).toFixed(1)}" text-anchor="end" font-family="JetBrains Mono" font-size="12" fill="#cfd3d8">${label}</text>`;}
+    `<text x="${x-8}" y="${(m+4).toFixed(1)}" text-anchor="end" font-family="JetBrains Mono" font-size="12" fill="#2f343c">${label}</text>`;}
 
 function carimbo(d,title,X0,Y0,Wc){
   const h=42;
-  let s=`<rect x="${X0}" y="${Y0}" width="${Wc}" height="${h}" fill="#14171c" stroke="#2b313a"/>`;
-  s+=`<rect x="${X0}" y="${Y0}" width="156" height="${h}" fill="#1d2127" stroke="#2b313a"/>`;
+  let s=`<rect x="${X0}" y="${Y0}" width="${Wc}" height="${h}" fill="#f4f5f7" stroke="#c8ccd2"/>`;
+  s+=`<rect x="${X0}" y="${Y0}" width="156" height="${h}" fill="#eceef1" stroke="#c8ccd2"/>`;
   if(d.logo){
     s+=`<rect x="${X0+3}" y="${Y0+3}" width="150" height="${h-6}" rx="4" fill="#ffffff"/>`;
     s+=`<image x="${X0+9}" y="${Y0+6}" width="138" height="${h-12}" href="${d.logo}" preserveAspectRatio="xMidYMid meet"/>`;
   } else {
-    s+=`<text x="${X0+12}" y="${Y0+18}" font-family="Archivo" font-size="13" fill="#e7eaee">RM Estruturas</text>`;
-    s+=`<text x="${X0+12}" y="${Y0+33}" font-family="Archivo" font-size="10" fill="#8b9098">Pré-Fabricadas</text>`;
+    s+=`<text x="${X0+12}" y="${Y0+18}" font-family="Archivo" font-size="13" fill="#1a1d22">RM Estruturas</text>`;
+    s+=`<text x="${X0+12}" y="${Y0+33}" font-family="Archivo" font-size="10" fill="#6b7280">Pré-Fabricadas</text>`;
   }
   const fields=[['CLIENTE',d.cliente||'—'],['OBRA',d.obra||'—'],['DATA',d.data||'—'],['ESC',d.escala||'—']];
   const fw=(Wc-156-150)/4;
   fields.forEach((f,i)=>{const fx=X0+156+i*fw;
-    s+=`<line x1="${fx}" y1="${Y0}" x2="${fx}" y2="${Y0+h}" stroke="#2b313a" stroke-width="0.7"/>`;
-    s+=`<text x="${fx+8}" y="${Y0+15}" font-family="Archivo" font-size="9" fill="#8b9098">${f[0]}</text>`;
-    s+=`<text x="${fx+8}" y="${Y0+31}" font-family="JetBrains Mono" font-size="12" fill="#e7eaee">${esc(f[1])}</text>`;});
+    s+=`<line x1="${fx}" y1="${Y0}" x2="${fx}" y2="${Y0+h}" stroke="#c8ccd2" stroke-width="0.7"/>`;
+    s+=`<text x="${fx+8}" y="${Y0+15}" font-family="Archivo" font-size="9" fill="#6b7280">${f[0]}</text>`;
+    s+=`<text x="${fx+8}" y="${Y0+31}" font-family="JetBrains Mono" font-size="12" fill="#1a1d22">${esc(f[1])}</text>`;});
   const tx=X0+Wc-150;
-  s+=`<line x1="${tx}" y1="${Y0}" x2="${tx}" y2="${Y0+h}" stroke="#2b313a" stroke-width="0.7"/>`;
-  s+=`<text x="${tx+75}" y="${Y0+25}" text-anchor="middle" font-family="Archivo" font-size="12" fill="#cfd3d8">${title}</text>`;
+  s+=`<line x1="${tx}" y1="${Y0}" x2="${tx}" y2="${Y0+h}" stroke="#c8ccd2" stroke-width="0.7"/>`;
+  s+=`<text x="${tx+75}" y="${Y0+25}" text-anchor="middle" font-family="Archivo" font-size="12" fill="#2f343c">${title}</text>`;
   return s;
 }
 
@@ -497,61 +497,61 @@ function buildLateral(d,c){
   const ob=6, ot=15, obu=9, otu=18;
 
   let g=`<svg id="svgLateral_svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  g+=`<rect width="${W}" height="${H}" fill="#0f1115"/>`;
+  g+=`<rect width="${W}" height="${H}" fill="#ffffff"/>`;
 
   /* tesoura */
-  g+=ln(P(0,0),P(L,0),'#4f5864',1.4);                 // banzo superior (sob o painel)
-  g+=`<line x1="${X(0).toFixed(1)}" y1="${Y(0).toFixed(1)}" x2="${X(L).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#4f5864" stroke-width="1.4"/>`; // banzo inferior
-  g+=`<line x1="${X(L).toFixed(1)}" y1="${Y(L).toFixed(1)}" x2="${X(L).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#4f5864" stroke-width="1.4"/>`; // montante de apoio
+  g+=ln(P(0,0),P(L,0),'#6b7280',1.4);                 // banzo superior (sob o painel)
+  g+=`<line x1="${X(0).toFixed(1)}" y1="${Y(0).toFixed(1)}" x2="${X(L).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#6b7280" stroke-width="1.4"/>`; // banzo inferior
+  g+=`<line x1="${X(L).toFixed(1)}" y1="${Y(L).toFixed(1)}" x2="${X(L).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#6b7280" stroke-width="1.4"/>`; // montante de apoio
   const Npan=18, x0=X(0), x1=X(L), y0=Y(0), yL=Y(L);
   let zz='';
   for(let i=0;i<=Npan;i++){const bx=x0+i/Npan*(x1-x0);zz+=`${bx.toFixed(1)},${y0.toFixed(1)} `;
     if(i<Npan){const tx2=x0+(i+0.5)/Npan*(x1-x0), ty=y0+(i+0.5)/Npan*(yL-y0);zz+=`${tx2.toFixed(1)},${ty.toFixed(1)} `;}}
-  g+=`<polyline points="${zz.trim()}" fill="none" stroke="#4f5864" stroke-width="0.9"/>`;
-  g+=`<text x="${X(L*0.5).toFixed(1)}" y="${(Y(0)+16).toFixed(1)}" font-family="Archivo" font-size="11" fill="#8b9098">Tesoura</text>`;
+  g+=`<polyline points="${zz.trim()}" fill="none" stroke="#6b7280" stroke-width="0.9"/>`;
+  g+=`<text x="${X(L*0.5).toFixed(1)}" y="${(Y(0)+16).toFixed(1)}" font-family="Archivo" font-size="11" fill="#6b7280">Tesoura</text>`;
 
   /* telha inferior (beiral) */
-  g+=`<polygon points="${pt(P(ping,ot))} ${pt(P(inf,ot))} ${pt(P(inf,ob))} ${pt(P(ping,ob))}" fill="#c7ccd1" opacity="0.16"/>`;
-  for(let s=ping+800;s<inf-300;s+=1700){g+=ln(P(s,ob),P(s,ot),'#8b9098',0.5);}
-  g+=ln(P(0,ot),P(inf,ot),'#dfe4e9',1.4);             // chapa superior (cheia)
-  g+=ln(P(ping,ob),P(inf,ob),'#aeb4bb',1.4);          // chapa inferior (recuada)
+  g+=`<polygon points="${pt(P(ping,ot))} ${pt(P(inf,ot))} ${pt(P(inf,ob))} ${pt(P(ping,ob))}" fill="#94a3b8" opacity="0.16"/>`;
+  for(let s=ping+800;s<inf-300;s+=1700){g+=ln(P(s,ob),P(s,ot),'#6b7280',0.5);}
+  g+=ln(P(0,ot),P(inf,ot),'#2f343c',1.4);             // chapa superior (cheia)
+  g+=ln(P(ping,ob),P(inf,ob),'#7a818b',1.4);          // chapa inferior (recuada)
   /* pingadeira */
   if(d.pingOn){const a=P(0,ot);g+=ln(a,[a[0]-2,a[1]+16],'#e0a32e',3.4,'stroke-linecap="round"');
     g+=`<text x="${(a[0]-4).toFixed(1)}" y="${(a[1]+30).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="11" fill="#e0a32e">Pingadeira ${fmt(d.ping)}</text>`;}
 
   /* telha superior (cumeeira) */
-  g+=`<polygon points="${pt(P(inf,otu))} ${pt(P(L,otu))} ${pt(P(L,obu))} ${pt(P(inf,obu))}" fill="#eef1f4" opacity="0.18"/>`;
-  for(let s=inf+800;s<L-300;s+=1700){g+=ln(P(s,obu),P(s,otu),'#8b9098',0.5);}
-  g+=ln(P(sLap,otu),P(L,otu),'#f0f3f6',1.4);          // chapa superior (cheia, lapeia)
-  g+=ln(P(inf,obu),P(L,obu),'#bcc2c9',1.4);           // chapa inferior (recuada)
+  g+=`<polygon points="${pt(P(inf,otu))} ${pt(P(L,otu))} ${pt(P(L,obu))} ${pt(P(inf,obu))}" fill="#5b6470" opacity="0.18"/>`;
+  for(let s=inf+800;s<L-300;s+=1700){g+=ln(P(s,obu),P(s,otu),'#6b7280',0.5);}
+  g+=ln(P(sLap,otu),P(L,otu),'#2f343c',1.4);          // chapa superior (cheia, lapeia)
+  g+=ln(P(inf,obu),P(L,obu),'#7a818b',1.4);           // chapa inferior (recuada)
   g+=ln(P(sLap,otu),P(inf,otu),'#aa221f',2.6);        // trecho de transpasse
 
   /* balão de detalhe do transpasse + inset */
   const bc=P((sLap+inf)/2, otu);
   g+=`<circle cx="${bc[0].toFixed(1)}" cy="${bc[1].toFixed(1)}" r="18" fill="none" stroke="#aa221f" stroke-width="1" stroke-dasharray="4 3"/>`;
   const bx=80, by=24, bw=210, bh=82;
-  g+=ln([bc[0]-12,bc[1]-8],[bx+bw,by+bh-18],'#8b9098',0.6,'stroke-dasharray="3 3"');
-  g+=`<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="8" fill="#14171c" stroke="#aa221f"/>`;
-  g+=`<text x="185" y="40" text-anchor="middle" font-family="Archivo" font-size="11" fill="#cfd3d8">Detalhe do transpasse + fixação</text>`;
-  g+=`<line x1="104" y1="72" x2="200" y2="72" stroke="#cdd2d8" stroke-width="1.5"/>`;
-  g+=`<line x1="104" y1="80" x2="200" y2="80" stroke="#cdd2d8" stroke-width="1.5"/>`;
-  g+=`<line x1="176" y1="66" x2="268" y2="66" stroke="#eef1f4" stroke-width="1.5"/>`;
-  g+=`<line x1="200" y1="74" x2="268" y2="74" stroke="#eef1f4" stroke-width="1.5"/>`;
+  g+=ln([bc[0]-12,bc[1]-8],[bx+bw,by+bh-18],'#6b7280',0.6,'stroke-dasharray="3 3"');
+  g+=`<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="8" fill="#f4f5f7" stroke="#aa221f"/>`;
+  g+=`<text x="185" y="40" text-anchor="middle" font-family="Archivo" font-size="11" fill="#2f343c">Detalhe do transpasse + fixação</text>`;
+  g+=`<line x1="104" y1="72" x2="200" y2="72" stroke="#2f343c" stroke-width="1.5"/>`;
+  g+=`<line x1="104" y1="80" x2="200" y2="80" stroke="#2f343c" stroke-width="1.5"/>`;
+  g+=`<line x1="176" y1="66" x2="268" y2="66" stroke="#5b6470" stroke-width="1.5"/>`;
+  g+=`<line x1="200" y1="74" x2="268" y2="74" stroke="#5b6470" stroke-width="1.5"/>`;
   g+=`<line x1="176" y1="66" x2="200" y2="66" stroke="#aa221f" stroke-width="2.4"/>`;
   g+=`<line x1="188" y1="61" x2="188" y2="76" stroke="#e0a32e" stroke-width="1.6"/><circle cx="188" cy="61" r="2.4" fill="#e0a32e"/>`;
-  g+=`<text x="268" y="59" text-anchor="end" font-family="Archivo" font-size="10" fill="#f3f6f8">chapa sup.</text>`;
+  g+=`<text x="268" y="59" text-anchor="end" font-family="Archivo" font-size="10" fill="#2f343c">chapa sup.</text>`;
   g+=`<line x1="176" y1="86" x2="200" y2="86" stroke="#aa221f" stroke-width="1"/><line x1="176" y1="83" x2="176" y2="89" stroke="#aa221f" stroke-width="1"/><line x1="200" y1="83" x2="200" y2="89" stroke="#aa221f" stroke-width="1"/>`;
-  g+=`<text x="206" y="90" text-anchor="start" font-family="JetBrains Mono" font-size="10" fill="#e57373">transpasse ${fmt(d.trans)}</text>`;
-  g+=`<text x="104" y="100" text-anchor="start" font-family="Archivo" font-size="10" fill="#cdd2d8">chapa inf. (recuo)</text>`;
+  g+=`<text x="206" y="90" text-anchor="start" font-family="JetBrains Mono" font-size="10" fill="#c0392b">transpasse ${fmt(d.trans)}</text>`;
+  g+=`<text x="104" y="100" text-anchor="start" font-family="Archivo" font-size="10" fill="#2f343c">chapa inf. (recuo)</text>`;
 
   /* cotas */
-  g+=`<text x="${(X(0)+2).toFixed(1)}" y="${baseY+30}" font-family="Archivo" font-size="10" fill="#9aa0a8">TELHA INFERIOR (beiral)</text>`;
+  g+=`<text x="${(X(0)+2).toFixed(1)}" y="${baseY+30}" font-family="Archivo" font-size="10" fill="#6b7280">TELHA INFERIOR (beiral)</text>`;
   g+=hdim(X(0),X(inf),baseY+44,`sup. ${fmt(c.tInf.sup)}`);
   g+=hdim(X(ping),X(inf),baseY+64,`inf. ${fmt(c.tInf.inf)}`);
-  g+=`<text x="${(X(sLap)+2).toFixed(1)}" y="${baseY+86}" font-family="Archivo" font-size="10" fill="#9aa0a8">TELHA SUPERIOR (cumeeira)</text>`;
+  g+=`<text x="${(X(sLap)+2).toFixed(1)}" y="${baseY+86}" font-family="Archivo" font-size="10" fill="#6b7280">TELHA SUPERIOR (cumeeira)</text>`;
   g+=hdim(X(sLap),X(L),baseY+100,`sup. ${fmt(c.tSup.sup)}`);
   g+=hdim(X(inf),X(L),baseY+120,`inf. ${fmt(c.tSup.inf)}`);
-  g+=hdim(X(0),X(L),baseY+144,`desenvolvido ${fmt(L)}`,'#5f6670');
+  g+=hdim(X(0),X(L),baseY+144,`desenvolvido ${fmt(L)}`,'#8b9098');
 
   g+=carimbo(d,'VISTA LATERAL',mL-20,H-50,W-2*(mL-20));
   g+=`</svg>`;
@@ -567,7 +567,7 @@ function buildTopo(d,c){
   const xR=X(comp), yB=Yv(totalY);
 
   let g=`<svg id="svgTopo_svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  g+=`<rect width="${W}" height="${H}" fill="#0f1115"/>`;
+  g+=`<rect width="${W}" height="${H}" fill="#ffffff"/>`;
 
   /* faixas das águas + regiões inf/sup */
   const jInf=d.inf*c.cos, jLap=(d.inf-d.trans)*c.cos;
@@ -580,8 +580,8 @@ function buildTopo(d,c){
   const yMid=Yv(depth);
   // água 1 (cima): beiral em oY, cumeeira em yMid
   // água 2 (baixo): cumeeira em yMid, beiral em yB
-  g+=`<rect x="${X(0)}" y="${oY}" width="${planW.toFixed(1)}" height="${(yMid-oY).toFixed(1)}" fill="#c7ccd1" opacity="0.05"/>`;
-  g+=`<rect x="${X(0)}" y="${yMid.toFixed(1)}" width="${planW.toFixed(1)}" height="${(yB-yMid).toFixed(1)}" fill="#c7ccd1" opacity="0.05"/>`;
+  g+=`<rect x="${X(0)}" y="${oY}" width="${planW.toFixed(1)}" height="${(yMid-oY).toFixed(1)}" fill="#94a3b8" opacity="0.05"/>`;
+  g+=`<rect x="${X(0)}" y="${yMid.toFixed(1)}" width="${planW.toFixed(1)}" height="${(yB-yMid).toFixed(1)}" fill="#94a3b8" opacity="0.05"/>`;
 
   // faixas de transpasse (em cada água, junto à emenda inf/sup)
   const band=(y1,y2)=>`<rect x="${X(0)}" y="${Math.min(y1,y2).toFixed(1)}" width="${planW.toFixed(1)}" height="${Math.abs(y2-y1).toFixed(1)}" fill="#aa221f" opacity="0.30"/>`;
@@ -594,24 +594,24 @@ function buildTopo(d,c){
 
   /* emendas entre telhas (largura útil) */
   for(let k=1;k*d.largUtil<comp;k++){const x=X(k*d.largUtil);
-    g+=`<line x1="${x.toFixed(1)}" y1="${oY}" x2="${x.toFixed(1)}" y2="${yB.toFixed(1)}" stroke="#272d36" stroke-width="0.7"/>`;}
+    g+=`<line x1="${x.toFixed(1)}" y1="${oY}" x2="${x.toFixed(1)}" y2="${yB.toFixed(1)}" stroke="#d7dade" stroke-width="0.7"/>`;}
 
   /* contorno + cumeeira + beirais */
-  g+=`<rect x="${X(0)}" y="${oY}" width="${planW.toFixed(1)}" height="${planH.toFixed(1)}" fill="none" stroke="#4f5864" stroke-width="1.4"/>`;
-  g+=`<line x1="${X(0)}" y1="${yMid.toFixed(1)}" x2="${xR}" y2="${yMid.toFixed(1)}" stroke="#cdd2d8" stroke-width="2"/>`;
-  g+=`<text x="${xR+8}" y="${(yMid+4).toFixed(1)}" font-family="Archivo" font-size="11" fill="#cdd2d8">Cumeeira</text>`;
+  g+=`<rect x="${X(0)}" y="${oY}" width="${planW.toFixed(1)}" height="${planH.toFixed(1)}" fill="none" stroke="#6b7280" stroke-width="1.4"/>`;
+  g+=`<line x1="${X(0)}" y1="${yMid.toFixed(1)}" x2="${xR}" y2="${yMid.toFixed(1)}" stroke="#2f343c" stroke-width="2"/>`;
+  g+=`<text x="${xR+8}" y="${(yMid+4).toFixed(1)}" font-family="Archivo" font-size="11" fill="#2f343c">Cumeeira</text>`;
   g+=`<line x1="${X(0)}" y1="${(oY-5).toFixed(1)}" x2="${xR}" y2="${(oY-5).toFixed(1)}" stroke="#3a6ea5" stroke-width="2"/>`;
   g+=`<line x1="${X(0)}" y1="${(yB+5).toFixed(1)}" x2="${xR}" y2="${(yB+5).toFixed(1)}" stroke="#3a6ea5" stroke-width="2"/>`;
-  g+=`<text x="${xR+8}" y="${(oY-2).toFixed(1)}" font-family="Archivo" font-size="10" fill="#6f93bd">Beiral / calha</text>`;
-  g+=`<text x="${xR+8}" y="${(yB+9).toFixed(1)}" font-family="Archivo" font-size="10" fill="#6f93bd">Beiral / calha</text>`;
+  g+=`<text x="${xR+8}" y="${(oY-2).toFixed(1)}" font-family="Archivo" font-size="10" fill="#3a6ea5">Beiral / calha</text>`;
+  g+=`<text x="${xR+8}" y="${(yB+9).toFixed(1)}" font-family="Archivo" font-size="10" fill="#3a6ea5">Beiral / calha</text>`;
 
   /* numeração */
-  g+=`<text x="${X(d.largUtil*0.5).toFixed(1)}" y="${(oY-12).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="10" fill="#8b9098">T1</text>`;
-  g+=`<text x="${X(comp-d.largUtil*0.5).toFixed(1)}" y="${(oY-12).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="10" fill="#8b9098">T${c.telhasPorAba}</text>`;
+  g+=`<text x="${X(d.largUtil*0.5).toFixed(1)}" y="${(oY-12).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="10" fill="#6b7280">T1</text>`;
+  g+=`<text x="${X(comp-d.largUtil*0.5).toFixed(1)}" y="${(oY-12).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="10" fill="#6b7280">T${c.telhasPorAba}</text>`;
 
   /* regiões */
-  g+=`<text x="${X(comp*0.5).toFixed(1)}" y="${((oY+Yv(jLap))/2+4).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="12" fill="#cdd2d8">Telha inferior</text>`;
-  g+=`<text x="${X(comp*0.5).toFixed(1)}" y="${((Yv(jInf)+yMid)/2+4).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="12" fill="#e7eaee">Telha superior</text>`;
+  g+=`<text x="${X(comp*0.5).toFixed(1)}" y="${((oY+Yv(jLap))/2+4).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="12" fill="#2f343c">Telha inferior</text>`;
+  g+=`<text x="${X(comp*0.5).toFixed(1)}" y="${((Yv(jInf)+yMid)/2+4).toFixed(1)}" text-anchor="middle" font-family="Archivo" font-size="12" fill="#1a1d22">Telha superior</text>`;
 
   /* cotas */
   g+=vdim(oY,Yv(jInf),X(0)-16,`${fmt(d.inf)}`);
@@ -621,12 +621,12 @@ function buildTopo(d,c){
 
   /* legenda */
   const lx=oX+planW+70, ly=oY+6;
-  const leg=[['#cdd2d8','Cumeeira'],['#3a6ea5','Beiral / calha'],['#aa221f','Transpasse'],['#272d36','Emenda entre telhas']];
-  g+=`<text x="${lx}" y="${ly}" font-family="Archivo" font-size="11" fill="#8b9098">LEGENDA</text>`;
+  const leg=[['#2f343c','Cumeeira'],['#3a6ea5','Beiral / calha'],['#aa221f','Transpasse'],['#d7dade','Emenda entre telhas']];
+  g+=`<text x="${lx}" y="${ly}" font-family="Archivo" font-size="11" fill="#6b7280">LEGENDA</text>`;
   leg.forEach((it,i)=>{const yy=ly+20+i*22;
     g+=`<line x1="${lx}" y1="${yy}" x2="${lx+22}" y2="${yy}" stroke="${it[0]}" stroke-width="3"/>`;
-    g+=`<text x="${lx+30}" y="${yy+4}" font-family="Archivo" font-size="12" fill="#cdd2d8">${it[1]}</text>`;});
-  g+=`<text x="${lx}" y="${ly+20+leg.length*22+8}" font-family="JetBrains Mono" font-size="11" fill="#8b9098">${c.telhasPorAba} telhas/aba × ${d.nAbas} abas</text>`;
+    g+=`<text x="${lx+30}" y="${yy+4}" font-family="Archivo" font-size="12" fill="#2f343c">${it[1]}</text>`;});
+  g+=`<text x="${lx}" y="${ly+20+leg.length*22+8}" font-family="JetBrains Mono" font-size="11" fill="#6b7280">${c.telhasPorAba} telhas/aba × ${d.nAbas} abas</text>`;
 
   g+=carimbo(d,'PLANTA DE COBERTURA',50,H-50,W-100);
   g+=`</svg>`;

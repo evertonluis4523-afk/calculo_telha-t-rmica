@@ -31,7 +31,7 @@ export function exportSvgAsPNG(svgEl, filename, scale = 2) {
     const canvas = document.createElement('canvas');
     canvas.width = vb.width * scale; canvas.height = vb.height * scale;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#0f1115'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     canvas.toBlob(blob => {
       const url = URL.createObjectURL(blob);

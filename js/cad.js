@@ -4,9 +4,9 @@ import { polygonBounds, distance, rotatePolygon, scalePolygon, translatePolygon,
          mirrorPolygon, snapToGrid, nearestSnapPoint, polygonCentroid, degToRad } from './geometry.js';
 
 const COLORS = {
-  agua: '#3a6ea5', aguaFill: 'rgba(58,110,165,.18)', aguaSel: '#e0a32e',
-  ref: '#5a6270', grid: '#232830', gridMajor: '#2b313a', axis: '#3a404a',
-  dim: '#8b9098', text: '#e7eaee', vertex: '#e7eaee'
+  agua: '#3a6ea5', aguaFill: 'rgba(58,110,165,.12)', aguaSel: '#b4690e',
+  ref: '#9aa0a8', grid: '#eeefec', gridMajor: '#e0e1db', axis: '#c8ccd2',
+  dim: '#6e7178', text: '#16171a', vertex: '#16171a'
 };
 
 let uid = 1;
@@ -324,7 +324,7 @@ export class CadEditor {
     const ctx = this.ctx;
     const rect = this.canvas.getBoundingClientRect();
     ctx.clearRect(0, 0, rect.width, rect.height);
-    ctx.fillStyle = '#0f1115';
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, rect.width, rect.height);
 
     this._drawGrid(rect);
@@ -376,7 +376,7 @@ export class CadEditor {
 
   _drawRulers(rect) {
     const ctx = this.ctx;
-    ctx.fillStyle = 'rgba(15,17,21,.85)';
+    ctx.fillStyle = 'rgba(246,246,243,.9)';
     ctx.fillRect(0, 0, rect.width, 18);
     ctx.fillRect(0, 0, 18, rect.height);
     ctx.fillStyle = COLORS.dim; ctx.font = '10px monospace';

@@ -8,7 +8,7 @@ const COLOR = {
 
 export function renderAguaMapSVG(agua, result, opts = {}) {
   const cols = result.columns;
-  if (!cols.length) return `<svg viewBox="0 0 400 80"><text x="10" y="40" fill="#8b9098" font-size="13">Sem geometria válida para "${escXml(agua.label)}".</text></svg>`;
+  if (!cols.length) return `<svg viewBox="0 0 400 80"><text x="10" y="40" fill="#6e7178" font-size="13">Sem geometria válida para "${escXml(agua.label)}".</text></svg>`;
 
   const minX = Math.min(...cols.map(c => c.x0));
   const maxX = Math.max(...cols.map(c => c.x1));
@@ -43,21 +43,21 @@ export function renderAguaMapSVG(agua, result, opts = {}) {
         y += ph;
       }
     }
-    body += smallText(x + w / 2, PAD - 8, `#${col.index + 1}`, w, '#8b9098');
+    body += smallText(x + w / 2, PAD - 8, `#${col.index + 1}`, w, '#6e7178');
   }
 
   const legend = opts.legend === false ? '' : renderLegend(W, H);
 
   return `<svg viewBox="0 0 ${W} ${H + (opts.legend === false ? 0 : 34)}" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, monospace">
-    <rect x="0" y="0" width="${W}" height="${H}" fill="#0f1115"/>
-    <text x="${PAD}" y="20" fill="#e7eaee" font-size="13" font-weight="700">${escXml(agua.label)} — ${cols.length} coluna(s)</text>
+    <rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>
+    <text x="${PAD}" y="20" fill="#16171a" font-size="13" font-weight="700">${escXml(agua.label)} — ${cols.length} coluna(s)</text>
     ${body}
     ${legend}
   </svg>`;
 }
 
 function rect(x, y, w, h, fill, opacity) {
-  return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${fill}" opacity="${opacity || 1}" stroke="#0f1115" stroke-width="1"/>`;
+  return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${fill}" opacity="${opacity || 1}" stroke="#ffffff" stroke-width="1"/>`;
 }
 function label(cx, cy, text, w) {
   if (w < 16) return '';
@@ -65,7 +65,7 @@ function label(cx, cy, text, w) {
 }
 function smallText(cx, cy, text, w, color) {
   if (w < 40) return '';
-  return `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" fill="${color || '#e7eaee'}" font-size="9" text-anchor="middle">${escXml(text)}</text>`;
+  return `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" fill="${color || '#16171a'}" font-size="9" text-anchor="middle">${escXml(text)}</text>`;
 }
 
 function renderLegend(W, H) {
@@ -76,7 +76,7 @@ function renderLegend(W, H) {
   let x = 8;
   let out = '';
   for (const [k, t] of items) {
-    out += `<rect x="${x}" y="${H + 8}" width="12" height="12" fill="${COLOR[k]}"/><text x="${x + 16}" y="${H + 18}" fill="#8b9098" font-size="10">${t}</text>`;
+    out += `<rect x="${x}" y="${H + 8}" width="12" height="12" fill="${COLOR[k]}"/><text x="${x + 16}" y="${H + 18}" fill="#6e7178" font-size="10">${t}</text>`;
     x += 16 + t.length * 5.6 + 14;
   }
   return out;
