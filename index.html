@@ -82,7 +82,19 @@ tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:none}
 #tbl .x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;line-height:1;padding:2px 7px;border-radius:6px}
 #tbl .x:hover{color:#fff;background:var(--accent)}
 .restore{font-size:12px}
-@media(max-width:560px){.appbar h1{font-size:15px}.wrap{padding:12px}}
+.modebar{display:flex;gap:8px;padding:10px 18px;background:var(--appbar);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.small{padding:6px 9px;font-size:11px}
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.cadtoolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.cadwrap{display:flex;gap:14px;flex-wrap:wrap}
+.cadcanvasbox{flex:1 1 480px;min-width:320px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#0f1115;touch-action:none}
+.cadcanvasbox canvas{display:block;cursor:crosshair}
+.cadside{width:280px;display:flex;flex-direction:column;gap:12px}
+#aguaList{font-size:12px}
+#aguaList th,#aguaList td{padding:6px 8px}
+.subpane h2{margin-top:0}
+@media(max-width:560px){.appbar h1{font-size:15px}.wrap{padding:12px}.cadside{width:100%}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="manifest" href="./manifest.json">
@@ -109,7 +121,12 @@ tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:none}
 </div>
 <div class="stripe"><i></i><i></i><i></i></div>
 
-<div class="wrap">
+<div class="modebar">
+  <button class="btn ghost active" id="modeBtnClassic" data-mode="modeClassic">Cálculo rápido</button>
+  <button class="btn ghost" id="modeBtnAdvanced" data-mode="modeAdvanced">Projeto avançado (CAD)</button>
+</div>
+
+<div class="wrap" id="modeClassic">
 
   <div class="card">
     <h2>Ajustes</h2>
@@ -191,6 +208,182 @@ tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:none}
     <div class="note" id="tblnote"></div>
   </div>
 
+</div>
+
+<div class="wrap" id="modeAdvanced" style="display:none">
+
+  <div class="card">
+    <h2>Projeto</h2>
+    <div class="grid">
+      <div class="field"><label>Nome do projeto</label><input type="text" id="advNome" placeholder="Ex.: Galpão Industrial XYZ"></div>
+      <div class="field"><label>Cliente</label><input type="text" id="advCliente"></div>
+      <div class="field"><label>Obra</label><input type="text" id="advObra"></div>
+    </div>
+    <div class="addbox" style="margin-top:14px">
+      <button class="btn" id="advSalvar">💾 Salvar projeto</button>
+      <button class="btn ghost" id="advProjetos">📂 Projetos salvos</button>
+      <button class="btn ghost" id="advNovo">Novo projeto</button>
+    </div>
+  </div>
+
+  <div class="subtabs">
+    <button class="btn ghost active" data-sub="subDesenho">1. Desenho</button>
+    <button class="btn ghost" data-sub="subCatalogo">2. Catálogo de perfis</button>
+    <button class="btn ghost" data-sub="subMapa">3. Distribuição &amp; Mapa</button>
+    <button class="btn ghost" data-sub="subFab">4. Fabricação</button>
+    <button class="btn ghost" data-sub="subMont">5. Montagem</button>
+    <button class="btn ghost" data-sub="subRel">6. Relatórios</button>
+  </div>
+
+  <!-- 1. DESENHO -->
+  <div class="card subpane" id="subDesenho">
+    <h2>Editor de cobertura (águas)</h2>
+    <div id="cadToolbar" class="cadtoolbar">
+      <button class="btn ghost small active" data-tool="select">Selecionar</button>
+      <button class="btn ghost small" data-tool="line">Linha</button>
+      <button class="btn ghost small" data-tool="polyline">Polilinha</button>
+      <button class="btn ghost small" data-tool="rect">Retângulo</button>
+      <button class="btn ghost small" data-tool="polygon">Polígono</button>
+      <button class="btn ghost small" data-tool="move">Mover</button>
+      <button class="btn ghost small" id="cadCopy">Copiar</button>
+      <button class="btn ghost small" id="cadRotate">Rotacionar</button>
+      <button class="btn ghost small" id="cadScale">Escala</button>
+      <button class="btn ghost small" id="cadMirror">Espelhar</button>
+      <button class="btn ghost small" id="cadDelete">Excluir</button>
+      <button class="btn ghost small" id="cadUndo">↶ Desfazer</button>
+      <button class="btn ghost small" id="cadRedo">↷ Refazer</button>
+      <label class="chk"><input type="checkbox" id="cadSnap" checked> Snap</label>
+    </div>
+    <div class="addbox" style="margin-bottom:10px">
+      <label class="filebtn">Importar DXF<input type="file" id="importDxf" accept=".dxf"></label>
+      <label class="filebtn">Importar PDF (referência)<input type="file" id="importPdf" accept="application/pdf"></label>
+      <button class="btn ghost small" id="clearRef">Remover referência</button>
+    </div>
+    <div class="cadwrap">
+      <div class="cadcanvasbox"><canvas id="cadCanvas"></canvas></div>
+      <div class="cadside">
+        <div class="card" style="margin:0;padding:12px">
+          <h2 style="margin-bottom:8px">Águas desenhadas (<span id="aguaCount">0</span>)</h2>
+          <table id="aguaList"><thead><tr><th>Água</th><th>Perfil</th><th></th></tr></thead><tbody id="aguaListBody"></tbody></table>
+        </div>
+        <div class="card" id="aguaPanel" style="display:none;margin:0;padding:12px">
+          <h2 style="margin-bottom:8px">Água selecionada</h2>
+          <div class="field"><label>Nome</label><input type="text" id="aguaLabel"></div>
+          <button class="btn ghost small" id="aguaPromote" style="margin:8px 0">Definir como água (a partir de referência importada)</button>
+          <div class="field" id="aguaProfileRow" style="display:flex;flex-direction:column;margin-top:8px">
+            <label>Perfil de telha</label><select id="aguaProfile"></select>
+          </div>
+          <div class="toggle" id="aguaPingRow" style="margin-top:8px"><input type="checkbox" id="aguaPingOn" checked><span>Tem pingadeira</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="note">Ferramentas de recorte/offset avançadas são simplificadas nesta versão: edite vértices arrastando-os (modo Selecionar) para ajustar recortes, ângulos e formas em L/U/trapezoidais. Cada polígono fechado representa uma água (plano de cobertura) independente.</div>
+  </div>
+
+  <!-- 2. CATÁLOGO -->
+  <div class="card subpane" id="subCatalogo" style="display:none">
+    <h2>Perfis de telha</h2>
+    <div class="grid">
+      <div class="field"><label>Nome</label><input type="text" id="profNome"></div>
+      <div class="field"><label>Fabricante</label><input type="text" id="profFabricante"></div>
+      <div class="field"><label>Modelo</label><input type="text" id="profModelo"></div>
+      <div class="field"><label>Espessura <span class="unit">(mm)</span></label><input type="number" id="profEspessura"></div>
+      <div class="field"><label>Largura útil <span class="unit">(mm)</span></label><input type="number" id="profLargUtil"></div>
+      <div class="field"><label>Largura total <span class="unit">(mm)</span></label><input type="number" id="profLargTotal"></div>
+      <div class="field"><label>Altura do perfil <span class="unit">(mm)</span></label><input type="number" id="profAltura"></div>
+      <div class="field"><label>Chapa superior <span class="unit">(mm)</span></label><input type="number" id="profChapaSup" step="0.1"></div>
+      <div class="field"><label>Chapa inferior <span class="unit">(mm)</span></label><input type="number" id="profChapaInf" step="0.1"></div>
+      <div class="field"><label>Peso <span class="unit">(kg/m²)</span></label><input type="number" id="profPeso" step="0.1"></div>
+      <div class="field"><label>Tipo de núcleo</label><select id="profNucleo"></select></div>
+      <div class="field"><label>Tipo de encaixe</label><select id="profEncaixe"></select></div>
+    </div>
+    <h2 style="margin-top:16px">Perfil da aba</h2>
+    <div class="grid">
+      <div class="field"><label>Largura da aba <span class="unit">(mm)</span></label><input type="number" id="abaLargura"></div>
+      <div class="field"><label>Altura <span class="unit">(mm)</span></label><input type="number" id="abaAltura"></div>
+      <div class="field"><label>Sobreposição mín. <span class="unit">(mm)</span></label><input type="number" id="abaSobMin"></div>
+      <div class="field"><label>Sobreposição máx. <span class="unit">(mm)</span></label><input type="number" id="abaSobMax"></div>
+      <div class="field"><label>Perda da aba <span class="unit">(mm)</span></label><input type="number" id="abaPerda"></div>
+      <div class="field"><label>Tolerância de fabricação <span class="unit">(mm)</span></label><input type="number" id="abaToler"></div>
+    </div>
+    <h2 style="margin-top:16px">Comprimentos</h2>
+    <div class="grid">
+      <div class="field"><label>Mínimo <span class="unit">(mm)</span></label><input type="number" id="lenMin"></div>
+      <div class="field"><label>Máximo <span class="unit">(mm)</span></label><input type="number" id="lenMax"></div>
+      <div class="field"><label>Ideal <span class="unit">(mm)</span></label><input type="number" id="lenIdeal"></div>
+      <div class="field"><label>Transporte <span class="unit">(mm)</span></label><input type="number" id="lenTransp"></div>
+      <div class="field"><label>Especial <span class="unit">(mm)</span></label><input type="number" id="lenEspecial"></div>
+    </div>
+    <div class="addbox" style="margin-top:14px">
+      <button class="btn" id="profSave">Salvar perfil</button>
+      <button class="btn ghost" id="profNew">Novo perfil</button>
+      <button class="btn ghost" id="profCancel">Cancelar edição</button>
+      <input type="hidden" id="profId">
+    </div>
+    <div class="exlist" id="profList" style="margin-top:14px"></div>
+
+    <h2 style="margin-top:22px">Pingadeiras</h2>
+    <div class="grid">
+      <div class="field"><label>Nome</label><input type="text" id="pingNome"></div>
+      <div class="field"><label>Comprimento <span class="unit">(mm)</span></label><input type="number" id="pingComp"></div>
+      <div class="field"><label>Largura <span class="unit">(mm)</span></label><input type="number" id="pingLarg"></div>
+      <div class="field"><label>Espessura <span class="unit">(mm)</span></label><input type="number" id="pingEsp" step="0.1"></div>
+      <div class="field"><label>Tipo</label><input type="text" id="pingTipo" placeholder="Metálica / Somente chapa…"></div>
+      <div class="field"><label>Cor</label><input type="text" id="pingCor"></div>
+      <div class="field"><label>Peso <span class="unit">(kg)</span></label><input type="number" id="pingPeso" step="0.1"></div>
+    </div>
+    <div class="addbox" style="margin-top:14px">
+      <button class="btn" id="pingSave">Salvar pingadeira</button>
+      <button class="btn ghost" id="pingNew">Nova pingadeira</button>
+      <input type="hidden" id="pingId">
+    </div>
+    <div class="exlist" id="pingList" style="margin-top:14px"></div>
+  </div>
+
+  <!-- 3. MAPA / DISTRIBUIÇÃO -->
+  <div class="card subpane" id="subMapa" style="display:none">
+    <div class="viewhead"><h2 style="margin:0">Distribuição inteligente &amp; mapa de fabricação</h2>
+      <span><button class="btn" id="calcDist">⚙ Calcular distribuição</button> <button class="btn ghost" id="exportDxf">Exportar DXF</button></span></div>
+    <div class="note">O motor calcula, para cada água, a direção de assentamento, o número de colunas (largura útil), o fatiamento em peças respeitando os comprimentos mín./ideal/máx./transporte, as emendas e o desconto da pingadeira — testando várias direções e escolhendo a de menor desperdício, cortes e emendas (otimização heurística automática).</div>
+    <div id="mapContainer" style="margin-top:12px"></div>
+  </div>
+
+  <!-- 4. FABRICAÇÃO -->
+  <div class="card subpane" id="subFab" style="display:none">
+    <div class="viewhead"><h2 style="margin:0">Lista de fabricação</h2><button class="btn ghost" id="exportFabCsv">Exportar CSV</button></div>
+    <table id="fabTable"></table>
+    <div class="note" id="fabNote">Calcule a distribuição na aba anterior para gerar esta lista.</div>
+  </div>
+
+  <!-- 5. MONTAGEM -->
+  <div class="card subpane" id="subMont" style="display:none">
+    <div class="viewhead"><h2 style="margin:0">Lista de montagem</h2><button class="btn ghost" id="exportMontCsv">Exportar CSV</button></div>
+    <table id="montTable"></table>
+    <div class="note">Ordem sugerida: da pingadeira (beiral) em direção à cumeeira, coluna a coluna.</div>
+  </div>
+
+  <!-- 6. RELATÓRIOS -->
+  <div class="card subpane" id="subRel" style="display:none">
+    <div class="viewhead"><h2 style="margin:0">Relatórios</h2><button class="btn" id="exportAdvPdf">Gerar PDF completo</button></div>
+    <div class="chips" id="repChips"></div>
+  </div>
+
+</div>
+
+<!-- Modal projetos avançados salvos -->
+<div id="advProjetosModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.7);align-items:center;justify-content:center;">
+  <div style="background:var(--panel);border:1px solid var(--line);border-radius:14px;width:min(540px,95vw);max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);">
+      <span style="font-weight:600;font-size:15px">📂 Projetos salvos</span>
+      <button id="advProjetosClose" style="background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:0 4px">×</button>
+    </div>
+    <div id="advProjetosList" style="overflow-y:auto;flex:1;padding:12px 18px;display:flex;flex-direction:column;gap:8px;">
+      <p style="color:var(--muted);font-size:13px;text-align:center;margin:20px 0">Nenhum projeto salvo ainda.</p>
+    </div>
+    <div style="padding:12px 18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)">
+      Os projetos são salvos localmente neste dispositivo/navegador.
+    </div>
+  </div>
 </div>
 
 <!-- Modal obras salvas -->
@@ -870,6 +1063,28 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     build();
   }
 })();
+</script>
+
+<script type="module">
+  import { initAdvancedMode, resizeCad, bindExportButtons } from './js/advanced.js';
+  let started = false;
+  function showMode(mode) {
+    document.getElementById('modeClassic').style.display = mode === 'modeClassic' ? '' : 'none';
+    document.getElementById('modeAdvanced').style.display = mode === 'modeAdvanced' ? '' : 'none';
+    document.getElementById('modeBtnClassic').classList.toggle('active', mode === 'modeClassic');
+    document.getElementById('modeBtnAdvanced').classList.toggle('active', mode === 'modeAdvanced');
+    if (mode === 'modeAdvanced') {
+      if (!started) { initAdvancedMode(); bindExportButtons(); started = true; }
+      setTimeout(resizeCad, 0);
+    }
+  }
+  document.querySelectorAll('.modebar [data-mode]').forEach(b => b.addEventListener('click', () => showMode(b.dataset.mode)));
+  document.querySelectorAll('.subtabs [data-sub]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.subpane').forEach(p => p.style.display = 'none');
+    document.getElementById(b.dataset.sub).style.display = '';
+    document.querySelectorAll('.subtabs [data-sub]').forEach(x => x.classList.toggle('active', x === b));
+    if (b.dataset.sub === 'subDesenho') setTimeout(resizeCad, 0);
+  }));
 </script>
 </body>
 </html>

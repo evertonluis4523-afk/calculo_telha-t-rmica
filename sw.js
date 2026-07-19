@@ -1,5 +1,7 @@
-const CACHE = 'rm-telha-termica-v1';
-const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
+const CACHE = 'rm-telha-termica-v2';
+const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png',
+  './js/geometry.js', './js/cad.js', './js/dxfio.js', './js/catalog.js', './js/distribution.js',
+  './js/mapview.js', './js/lists.js', './js/exportadv.js', './js/advanced.js'];
 const JSPDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
 
 self.addEventListener('install', e => {
