@@ -246,7 +246,7 @@ function compute(d){
   const t=d.incl/100, cos=1/Math.sqrt(1+t*t), sin=t/Math.sqrt(1+t*t);
   const L=d.inf + d.sup - d.trans;
   const vao=L*cos, rise=L*sin;
-  const telhasPorAba=Math.round(d.largTotal/d.largUtil);
+  const telhasPorAba=Math.ceil(d.largTotal/d.largUtil);
   const qtyAuto=telhasPorAba*d.nAbas;
   const qty=d.qtyAuto?qtyAuto:d.qtyManual;
   const areaM2=(L*d.largTotal*d.nAbas)/1e6;
