@@ -748,7 +748,10 @@ $('logoClear').addEventListener('click',()=>{state.logo='';const lf=$('logoFile'
 $('reset').addEventListener('click',()=>{Object.entries(defaults).forEach(([k,v])=>{const el=$(k);if(el.type==='checkbox')el.checked=v;else el.value=v;});render();});
 
 load();applyLogo();render();
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
+if('serviceWorker' in navigator){
+  if(location.protocol.startsWith('http')){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
+  else { navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});}).catch(function(){}); }
+}
 </script>
 <!-- Ajuste de tela (mobile) -->
 <script>
